@@ -1,0 +1,487 @@
+{
+	"info": {
+		"_postman_id": "7c5d5aff-5837-45dd-801b-dfbdc288bd5f",
+		"name": "ClickUP API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22987946"
+	},
+	"item": [
+		{
+			"name": "Create Space",
+			"item": [
+				{
+					"name": "Create Space and validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Set the Space ID\", function () {",
+									"    console.log(jsonData.id);",
+									"    pm.environment.set(\"spaceID\", (jsonData.id));",
+									"});",
+									"",
+									"pm.test(\"Validate the Space name\", function(){",
+									"    pm.expect(jsonData.name).to.not.be.null;",
+									"    pm.environment.set(\"spaceName\", (jsonData.name));",
+									"    console.log(jsonData.name);",
+									"})",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"multiple_assignees\": true,\n  \"features\": {\n    \"due_dates\": {\n      \"enabled\": true,\n      \"start_date\": false,\n      \"remap_due_dates\": true,\n      \"remap_closed_due_date\": false\n    },\n    \"time_tracking\": {\n      \"enabled\": false\n    },\n    \"tags\": {\n      \"enabled\": true\n    },\n    \"time_estimates\": {\n      \"enabled\": true\n    },\n    \"checklists\": {\n      \"enabled\": true\n    },\n    \"custom_fields\": {\n      \"enabled\": true\n    },\n    \"remap_dependencies\": {\n      \"enabled\": true\n    },\n    \"dependency_warning\": {\n      \"enabled\": true\n    },\n    \"portfolios\": {\n      \"enabled\": true\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/team/{{teamID}}/space",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"team",
+								"{{teamID}}",
+								"space"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Created Space",
+			"item": [
+				{
+					"name": "Get Space",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Space id is the same\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.equal(pm.environment.get(\"spaceID\"));",
+									"    console.log(pm.environment.get(\"spaceID\"));",
+									"});",
+									"",
+									"pm.test(\"Space name is the same\", function () {",
+									"    pm.expect(jsonData.name).to.not.be.null;",
+									"    pm.expect(jsonData.name).to.equal(pm.environment.get(\"spaceName\"));",
+									"    console.log(pm.environment.get(\"spaceName\"));",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/space/{{spaceID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"space",
+								"{{spaceID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create Folder",
+			"item": [
+				{
+					"name": "Create Folder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Set Folder details as environment variables\", function(){ ",
+									"    pm.environment.set(\"folderName\", (jsonData.name));",
+									"    pm.environment.set(\"folderID\", (jsonData.id));",
+									"    console.log(jsonData.name);",
+									"    console.log(jsonData.id);",
+									"});",
+									"",
+									"pm.test(\"Validate that the id & name aren't null\",function(){",
+									"    pm.expect(jsonData.name).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomCity}}\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/space/{{spaceID}}/folder",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"space",
+								"{{spaceID}}",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Created Folder and Validate",
+			"item": [
+				{
+					"name": "Get Created Folder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Space id is the same\", function () {",
+									"    pm.expect(jsonData.space.id).to.not.be.null;",
+									"    pm.expect(jsonData.space.id).to.equal(pm.environment.get(\"spaceID\"));",
+									"    console.log(pm.environment.get(\"spaceID\"));",
+									"});",
+									"",
+									"pm.test(\"Folder id is the same\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.equal(pm.environment.get(\"folderID\"));",
+									"    console.log(pm.environment.get(\"folderID\"));",
+									"});",
+									"",
+									"pm.test(\"Folder name is the same\", function () {",
+									"    pm.expect(jsonData.name).to.not.be.null;",
+									"    pm.expect(jsonData.name).to.equal(pm.environment.get(\"folderName\"));",
+									"    console.log(pm.environment.get(\"folderName\"));",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folderID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folderID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Created Folder",
+			"item": [
+				{
+					"name": "Update the details of the created folder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Space id is the same\", function () {",
+									"    pm.expect(jsonData.space.id).to.not.be.null;",
+									"    pm.expect(jsonData.space.id).to.equal(pm.environment.get(\"spaceID\"));",
+									"    console.log(pm.environment.get(\"spaceID\"));",
+									"});",
+									"",
+									"pm.test(\"Folder id is the same\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.equal(pm.environment.get(\"folderID\"));",
+									"    console.log(pm.environment.get(\"folderID\"));",
+									"});",
+									"",
+									"pm.test(\"Folder name is not the same\", function () {",
+									"    pm.expect(jsonData.name).to.not.be.null;",
+									"    pm.expect(jsonData.name).to.not.equal(pm.environment.get(\"folderName\"));",
+									"    console.log(pm.environment.get(\"folderName\"));",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomCountry}}\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folderID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folderID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All the folders in a space",
+			"item": [
+				{
+					"name": "Get all folders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"let counter;",
+									"let length=jsonData.folders.length;",
+									"",
+									"pm.test(\"Space iD is the same\", function () {",
+									"    let result1 = false;",
+									"    for (counter=0; counter <= length+1; counter++){",
+									"            console.log(\"the counter is \"+ counter);",
+									"            let currentSpaceID = jsonData.folders[counter].space.id;",
+									"            console.log(\"The current Space id of the folder is \"+ currentSpaceID);",
+									"            if (jsonData.folders[counter+1] === undefined){",
+									"                console.log(\"There are no other folders\")",
+									"                break;",
+									"            }else if(currentSpaceID == pm.environment.get(\"spaceID\")){",
+									"                result1 = true;",
+									"            }else{",
+									"                result1 = false;",
+									"            }",
+									"    }",
+									"    console.log(result1);",
+									"    pm.expect(result1 === \"true\");",
+									"});",
+									"",
+									"pm.test(\"Folder name is not the same\", function () {",
+									"    let result = false;",
+									"    for (counter=0; counter <= length+1; counter++){",
+									"            console.log(\"the counter is \"+ counter);",
+									"            let currentName = jsonData.folders[counter].name;",
+									"            console.log(\"The current folder name is \"+ currentName);",
+									"            if (jsonData.folders[counter+1] === undefined){",
+									"                console.log(\"There are no other folders\")",
+									"                break;",
+									"            }else if(currentName == jsonData.folders[counter+1].name){",
+									"                result = false;",
+									"            }else{",
+									"                result = true;",
+									"            }",
+									"    }",
+									"    console.log(result);",
+									"    pm.expect(result === \"true\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/space/{{spaceID}}/folder",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"space",
+								"{{spaceID}}",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Created Space",
+			"item": [
+				{
+					"name": "Delete Created Space",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"The Request is deleted\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.value).to.eql(undefined);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/space/{{spaceID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"space",
+								"{{spaceID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Spaces after deletion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/team/{{team_id}}/space",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"team",
+								"{{team_id}}",
+								"space"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{apiToken}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "teamID",
+			"value": "31641759",
+			"type": "string"
+		}
+	]
+}
